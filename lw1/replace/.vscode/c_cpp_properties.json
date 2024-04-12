@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/Users/Jaskuen/gcc/include/**",
+                "C:/Users/Jaskuen/gcc/include/c++/13.2.0/x86_64-w64-mingw32/bits",
+                "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

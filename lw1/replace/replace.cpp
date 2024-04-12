@@ -1,6 +1,7 @@
 #include "string"
 #include "iostream"
 #include "fstream"
+#include "cassert"
 
 // Возвращает результат замены всех вхождения строки searchString внутри строки subject на replacementString
 // Если строка searchString пустая, то возвращается subject
@@ -25,10 +26,10 @@ std::string ReplaceString(const std::string& subject,
 			// Позицию поиска переносим на позицию после найденной строки foundPos + searchString.length()
 			pos = foundPos + searchString.length();
 		} 
-		else 
+		else // Больше не найдено совпадений
 		{
+			// Копируем остаток строки
 			result.append(subject, pos);
-			pos = subject.length();
 		}
 	}
 	return result;
@@ -58,27 +59,30 @@ int main(int argc, char* argv[])
 	// принимающую имена файлов, а также строки для поиска и замены
 	// Добавьте обработку ошибок
 
-	std::ifstream inputFile;
-	inputFile.open(argv[1]);
+	ifstream input(argv[1]);
 
-	bool fErr = false;
+	// Открываем файлы для чтения и записи и проверяем на ошибки
 
-	if (!inputFile.is_open()) {
-		std::cout << "Error opening input file " << argv[1] << "!";
-		fErr = true;
+	if (!input.is_open()) 
+	{
+		std::cout << "Failed to open " << argv[1] << "for reading\n";
+		return 1;
 	}
 
-	std::ofstream outputFile;
-	outputFile.open(argv[2]);
+	ofstream output(argv[2]);
 
-	if (!fErr) {
-		std::string search = argv[3];
-		std::string replace = argv[4];
-
-		CopyStreamWithReplacement(inputFile, outputFile, search, replace);
-		// Подумайте, для чего здесь вызывается flush?
-		outputFile.flush();	
+	if (!output.is_open())
+	{
+		std::cout << "Failed to open " << argv[1] << "for writing\n";
+		return 1;
 	}
+
+	std::string search = argv[3];
+	std::string replace = argv[4];
+
+	CopyStreamWithReplacement(inputFile, outputFile, search, replace);
+	// Подумайте, для чего здесь вызывается flush?
+	outputFile.flush();	
 
 	return 0;
 }
