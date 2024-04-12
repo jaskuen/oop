@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Car">
+      <UniqueIdentifier>{ae3ded1e-e81d-4192-a1ae-dbac888add7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Car">
+      <UniqueIdentifier>{7da6c1b5-c8e4-47bd-8937-83d3bb436ed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\UserInterface">
+      <UniqueIdentifier>{c4f1d70a-8a0d-4964-acac-c215031c02b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\UserInterface\CommandError">
+      <UniqueIdentifier>{7fe1f320-0f36-47f7-b0c8-dada1566af30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\UserInterface\CommandSuccess">
+      <UniqueIdentifier>{a450e367-d40f-4376-a586-0cac01dbb645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\UserInterface">
+      <UniqueIdentifier>{3f67cfd5-1fd6-4bc9-a31b-332a4f74ccc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\UserInterface\CommandError">
+      <UniqueIdentifier>{1717efd2-6074-47f3-a4b2-ff8a6aaa1a8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\UserInterface\CommandSuccess">
+      <UniqueIdentifier>{30eda707-536f-424b-9829-cd959779e326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Car\Gear">
+      <UniqueIdentifier>{1657fb0f-f50a-438a-8a26-f7d01baf7277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Car\Gear">
+      <UniqueIdentifier>{bb9ce2cd-1377-4574-b14e-ce945b79ffb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Car\Direction">
+      <UniqueIdentifier>{ed94da51-80bc-46ba-8663-ab4b20c650bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Car\Direction">
+      <UniqueIdentifier>{ffcdbb94-c1d5-4b3f-a170-86b8d6d174fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Automobile.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Исходные файлы\Car</Filter>
+    </ClCompile>
+    <ClCompile Include="Gear.cpp">
+      <Filter>Исходные файлы\Car\Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandError.cpp">
+      <Filter>Исходные файлы\UserInterface\CommandError</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandSuccess.cpp">
+      <Filter>Исходные файлы\UserInterface\CommandSuccess</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>Исходные файлы\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Direction.cpp">
+      <Filter>Исходные файлы\Car\Direction</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Исходные файлы\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandSuccess.h">
+      <Filter>Исходные файлы\UserInterface\CommandSuccess</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandError.h">
+      <Filter>Исходные файлы\UserInterface\CommandError</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Исходные файлы\Car</Filter>
+    </ClInclude>
+    <ClInclude Include="Gear.h">
+      <Filter>Исходные файлы\Car\Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.h">
+      <Filter>Исходные файлы\Car\Direction</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
