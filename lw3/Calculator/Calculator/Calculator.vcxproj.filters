@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Calculator">
+      <UniqueIdentifier>{be8bf80f-d717-4003-9e6f-ff1b01bc9c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Calculator\Data">
+      <UniqueIdentifier>{0296a37e-d07e-4c86-bcd1-50bcecf0575e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Calculator\Data\Variable">
+      <UniqueIdentifier>{9c11f30d-eacd-40bb-b718-a3534a997bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Calculator\Data\Function">
+      <UniqueIdentifier>{17a0206f-2d08-4d22-8cac-40b71b4963c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\UserInterface">
+      <UniqueIdentifier>{3cb6fd6b-f150-47ad-937a-df4770280dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Calculator\OperationList">
+      <UniqueIdentifier>{e99b6531-4899-49bf-a909-8bc7aab9ea75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Program.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Variable.cpp">
+      <Filter>Исходные файлы\Calculator\Data\Variable</Filter>
+    </ClCompile>
+    <ClCompile Include="DataElement.cpp">
+      <Filter>Исходные файлы\Calculator\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Исходные файлы\Calculator\Data\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculator.cpp">
+      <Filter>Исходные файлы\Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>Исходные файлы\UserInterface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Variable.h">
+      <Filter>Исходные файлы\Calculator\Data\Variable</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>Исходные файлы\Calculator\Data\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="DataElement.h">
+      <Filter>Исходные файлы\Calculator\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculator.h">
+      <Filter>Исходные файлы\Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Исходные файлы\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationList.h">
+      <Filter>Исходные файлы\Calculator\OperationList</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
