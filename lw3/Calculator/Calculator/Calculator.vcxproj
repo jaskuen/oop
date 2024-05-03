@@ -159,6 +159,7 @@
     <ClInclude Include="DataElement.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="OperationList.h" />
+    <ClInclude Include="UpdateQueue.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Variable.h" />
   </ItemGroup>

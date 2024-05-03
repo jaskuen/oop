@@ -1,9 +1,8 @@
 #include "UserInterface.h"
-#include <iostream>
 #include <sstream>
-#include <string>
-#include <array>
 #include <algorithm>
+
+//убрать лишние include
 
 CUserInterface::CUserInterface(CCalculator& calculator, std::istream& input, std::ostream& output)
 	: m_calculator(calculator)
@@ -86,7 +85,7 @@ bool CUserInterface::CreateFunction(std::istream& args)
 	{
 		const std::string & arg1 = rest.substr(0, indexOfSign);
 		const std::string & arg2 = rest.substr(indexOfSign + 1);
-		char operation = rest[indexOfSign];
+		char operation = rest.at(indexOfSign);
 		m_calculator.CreateFunction(name, arg1, arg2, operation);
 	}
 	return false;
@@ -96,18 +95,35 @@ bool CUserInterface::PrintElement(std::istream& args)
 {
 	std::string name;
 	args >> name;
-	m_calculator.PrintElement(name);
+	double value = m_calculator.GetValue(name);
+	std::cout << name << ":" << value << std::endl;
 	return false;
+}
+
+void PrintFuntionsCallback(std::vector<std::pair<std::string, std::shared_ptr<CFunction>>> functionList)
+{
+	for (const auto& pair : functionList)
+	{
+		std::cout << pair.first << ":" << pair.second->Value() << std::endl;
+	}
+}
+
+void PrintVariablesCallback(std::vector<std::pair<std::string, std::shared_ptr<CVariable>>> variableList)
+{
+	for (const auto& pair : variableList)
+	{
+		std::cout << pair.first << ":" << pair.second->Value() << std::endl;
+	}
 }
 
 bool CUserInterface::PrintFunctions(std::istream& args)
 {
-	m_calculator.PrintFunctions();
+	m_calculator.Functions(PrintFuntionsCallback);
 	return false;
 }
 
 bool CUserInterface::PrintVariables(std::istream& args)
 {
-	m_calculator.PrintVariables();
+	m_calculator.Variables(PrintVariablesCallback);
 	return false;
 }

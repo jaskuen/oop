@@ -31,6 +31,9 @@
     <Filter Include="Исходные файлы\Calculator\OperationList">
       <UniqueIdentifier>{e99b6531-4899-49bf-a909-8bc7aab9ea75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Calculator\UpdateQueue">
+      <UniqueIdentifier>{f09f43c3-01d6-4ac4-8a76-c8a1c24f31ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="OperationList.h">
       <Filter>Исходные файлы\Calculator\OperationList</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateQueue.h">
+      <Filter>Исходные файлы\Calculator\UpdateQueue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

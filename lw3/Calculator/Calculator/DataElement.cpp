@@ -13,28 +13,18 @@ void CDataElement::Set(double newValue)
     m_value = newValue;
 }
 
-double CDataElement::Value()
+double CDataElement::Value() const
 {
-    if (!m_value.has_value())
-    {
-        return NAN;
-    }
-    return m_value.value();
+    return m_value.value_or(NAN);
 }
 
-const std::string & CDataElement::Name()
+void CDataElement::AddDependent(std::weak_ptr<CFunction> dependent)
 {
-    return m_name;
+    m_dependents.push_back(dependent);
 }
 
-void CDataElement::Print()
+std::vector<std::weak_ptr<CFunction>> CDataElement::GetDependents() const
 {
-    if (!m_value.has_value())
-    {
-        std::cout << "not initialized" << std::endl;
-    }
-    else
-    {
-        std::cout << std::fixed << std::setprecision(2) << m_value.value() + .0 << std::endl;
-    }
+    return m_dependents;
 }
+
