@@ -26,18 +26,18 @@ std::optional<Args> ParseCommandLine(int argc, char* argv[])
     return args;
 }
 
-int CharToInt(const char& ch, int radix)
+int CharToInt(char ch, int radix)
 {
-    int code = (int)ch;
-    if (code > 47 && code < 58)
+    //48 и 55 в символы
+    if (ch >= '0' && ch <= '9')
     {
-        return code - 48;
+        return ch - 48;
     }
     else
     {
-        if (code > 64 && code < 91)
+        if (ch >= 'A' && ch <= 'Z')
         {
-            return code - 55;
+            return ch - 55;
         }
     }
     throw std::runtime_error("Incorrect symbol entered.\n");
@@ -46,22 +46,19 @@ int CharToInt(const char& ch, int radix)
 // Подобрать нормальное название функции MultAndAdd(factor1, factor2, adden)
 bool MultAndAdd(int factor1, int factor2, int adden)
 {
-
+    return true;
 }
 
-bool OutOfIntRange(int n, int radix, int intFromChar, int sign)
+bool OutOfIntRange(int originalNumber, int radix, int intFromChar, int sign)
 {
+    // Можно  упростить return использование тернарного оператора
     if (sign >= 0)
     {
-        return (n > (INT_MAX - intFromChar) / radix);
+        return (originalNumber > (INT_MAX - intFromChar) / radix);
     }
-    else
-    {
-        return (n < (INT_MIN + intFromChar) / radix);
-    }
+    return (originalNumber < (INT_MIN + intFromChar) / radix);
 }
 
-// Временная зависимость этой
 int StringToInt(const std::string& str, int radix)
 {
     int result = 0;
@@ -74,12 +71,12 @@ int StringToInt(const std::string& str, int radix)
         sign = -1;
     }
     int intFromChar;
-    while (counter < str.length())
+    while (counter < str.size())
     {
         intFromChar = CharToInt(str.at(counter++), radix);
         if (OutOfIntRange(result, radix, intFromChar, sign))
         {
-            throw std::runtime_error("Result out if range.\n");
+            throw std::runtime_error("Result is out of range.\n");
         }
         result = result * radix + intFromChar * sign;
     }
@@ -118,28 +115,30 @@ int Power(int n, int degree)
     return result;
 }
 
-std::string IntToString(int n, int radix)
+std::string IntToString(int originalNumber, int radix)
 {
-    std::string result = "";
+    std::string result;
     int num = 0;
     bool resultIsMinInt = false;
    
-    if (n < 0)
+    if (originalNumber < 0)
     {
-        if (n == INT_MIN)
+        if (originalNumber == INT_MIN)
         {
-            n++;
+            originalNumber++;
             resultIsMinInt = true;
         }
-        n *= -1;
+        originalNumber *= -1;
         result = "-";
     }
-    int resultLength = GetDegree(n, radix);
+    int resultLength = GetDegree(originalNumber, radix);
 
     for (int i = resultLength; i >= 0; i--)
     {
-        num = n / Power(radix, i);
-        n -= num * Power(radix, i);
+        // Работать сразу с originalNumber, постепенно разбирая его
+        // Избавитсья от Power и GetDegree
+        num = originalNumber / Power(radix, i);
+        originalNumber -= num * Power(radix, i);
         if (i == 0 && resultIsMinInt)
         {
             num += 1;
@@ -150,7 +149,7 @@ std::string IntToString(int n, int radix)
     return result;
 }
 
-void CheckRadix(int source, int destination)
+void ValidateRadixParameters(int source, int destination)
 {
     if (source < 2 || source > 36)
     {
@@ -162,16 +161,11 @@ void CheckRadix(int source, int destination)
     }
 }
 
-// Переименовать ConvertNotation
-// Просмотреть лекцию, узнать, когда передавать ссылки, объяснить преподавателю
-// Подавать в функцию сразу число(система счисления)
-void ConvertNotation(std::string sourceStr, std::string destinationStr, std::string valueStr)
+void ChangeNumberRadix(const std::string& sourceStr, const std::string& destinationStr, const std::string& valueStr)
 {
-    bool error = false;
-
     int source = StringToInt(sourceStr, 10);
     int destination = StringToInt(destinationStr, 10);
-    CheckRadix(source, destination);
+    ValidateRadixParameters(source, destination);
 
     int result = StringToInt(valueStr, source);
     
@@ -187,11 +181,12 @@ int main(int argc, char* argv[])
     }
     try
     {
-        ConvertNotation(args->sourceStr, args->destinationStr, args->valueStr);
+        ChangeNumberRadix(args->sourceStr, args->destinationStr, args->valueStr);
     }
     catch (const std::exception& exception)
     {
         std::cout << exception.what() << std::endl;
+        return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;

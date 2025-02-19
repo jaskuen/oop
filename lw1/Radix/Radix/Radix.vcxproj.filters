@@ -25,4 +25,9 @@
     <Text Include="INT_MAX.txt" />
     <Text Include="INT_MIN.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests.bat">
+      <Filter>Исходные файлы</Filter>
+    </None>
+  </ItemGroup>
 </Project>
