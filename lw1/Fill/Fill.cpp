@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <unordered_set>
 
 const int MAX_MATRIX_SIZE = 100;
 
@@ -15,7 +16,19 @@ enum class FillCharTypes
 	Border = '#',
 };
 
-using Matrix = std::vector<std::vector<char>>;
+const std::unordered_set<char> PossibleChars
+{
+	char(FillCharTypes::Empty),
+	char(FillCharTypes::Source),
+	char(FillCharTypes::Border)
+};
+
+struct Matrix
+{
+	std::vector<std::vector<char>> field;
+	int height;
+};
+
 struct Position
 {
 	int x, y;
@@ -83,22 +96,18 @@ bool PositionInsideField(const Position& position)
 
 void WriteMatrix(const Matrix& matrix, std::ostream& output)
 {
-	for (int j = 0; j < matrix.size(); j++)
+	for (int j = 0; j < matrix.height; j++)
 	{
 		std::string currentLine;
-		for (int i = 0; i < matrix[j].size(); i++)
+		for (int i = 0; i < matrix.field[j].size(); i++)
 		{
-			if (matrix[j][i] == 0)
+			if (matrix.field[j][i] == 0)
 			{
 				break;
 			}
-			currentLine += matrix[j][i];
+			currentLine += matrix.field[j][i];
 		}
-		TrimEnd(currentLine);
-		if (currentLine.size() == 0)
-		{
-			continue;
-		}
+		TrimEnd(currentLine); 
 		output << currentLine << std::endl;
 	}
 }
@@ -118,12 +127,13 @@ void Fill(const Matrix& matrix, const std::vector<Position>& startPoints, std::o
 			{
 				if (PositionInsideField(possibleWay))
 				{
-					if (matrixToFill[possibleWay.y][possibleWay.x] != char(FillCharTypes::Border)
-						&& matrixToFill[possibleWay.y][possibleWay.x] != char(FillCharTypes::Filled)
-						&& matrixToFill[possibleWay.y][possibleWay.x] != char(FillCharTypes::Source))
+					if (matrixToFill.field[possibleWay.y][possibleWay.x] != char(FillCharTypes::Border)
+						&& matrixToFill.field[possibleWay.y][possibleWay.x] != char(FillCharTypes::Filled)
+						&& matrixToFill.field[possibleWay.y][possibleWay.x] != char(FillCharTypes::Source))
 					{
 						newWave.push_back(possibleWay);
-						matrixToFill[possibleWay.y][possibleWay.x] = char(FillCharTypes::Filled);
+						matrixToFill.field[possibleWay.y][possibleWay.x] = char(FillCharTypes::Filled);
+						matrixToFill.height = std::max(matrixToFill.height, possibleWay.y + 1);
 					}
 				}
 			}
@@ -136,23 +146,28 @@ void Fill(const Matrix& matrix, const std::vector<Position>& startPoints, std::o
 
 void GetMatrixAndFill(std::istream& input, std::ostream& output)
 {
-	std::vector<std::vector<char>> matrix;
+	Matrix matrix;
 	std::vector<Position> sources;
 	std::string line;
-	matrix.resize(MAX_MATRIX_SIZE);
+	matrix.field.resize(MAX_MATRIX_SIZE);
 	bool eof = false;
 	for (int j = 0; j < MAX_MATRIX_SIZE; j++)
 	{
-		matrix[j].resize(MAX_MATRIX_SIZE);
-		if (!std::getline(input, line))
+		matrix.field[j].resize(MAX_MATRIX_SIZE);
+		if (!eof && !std::getline(input, line))
 		{
 			eof = true;
 		}
 		if (!eof)
 		{
+			matrix.height++;
 			for (int i = 0; i < std::min(int(line.size()), MAX_MATRIX_SIZE); i++)
 			{
-				matrix[j][i] = line[i];
+				if (!PossibleChars.contains(line[i]))
+				{
+					throw std::runtime_error("ERROR");
+				}
+				matrix.field[j][i] = line[i];
 				if (line[i] == char(FillCharTypes::Source))
 				{
 					sources.push_back(Position(i, j));
