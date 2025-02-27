@@ -3,7 +3,7 @@
 #include <string>
 #include "HtmlDecoder.h"
 
-int main()
+int main(int argc, char* argv[])
 {
     try
     {

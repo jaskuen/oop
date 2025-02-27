@@ -31,9 +31,23 @@ SCENARIO("EXAMPLE FROM GITHUB")
 	REQUIRE(result == "Cat <says> \"Meow\". M&M's");
 }
 
-SCENARIO("NO USING DECODED & IN DECODING AGAIN")
+SCENARIO("NOT USING DECODED & IN DECODING AGAIN")
 {
 	std::string input = "&amp;amp;";
 	std::string result = HtmlDecode(input);
 	REQUIRE(result == "&amp;");
+}
+
+SCENARIO("NO ENTITIES")
+{
+	std::string input = "just any string without entities.";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == input);
+}
+
+SCENARIO("SPACE BETWEEN & AND ENTITY BODY")
+{
+	std::string input = "Cat & lt;says& gt; & quot;Meow& quot;. M& amp;M& apos;s";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == input);
 }
