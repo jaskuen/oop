@@ -91,7 +91,8 @@ void TrimEnd(std::string& s) {
 
 bool PositionInsideField(const Position& position)
 {
-	return (position.x >= 0 && position.x < 100) && (position.y >= 0 && position.y < 100);
+	// константа
+	return (position.x >= 0 && position.x < MAX_MATRIX_SIZE) && (position.y >= 0 && position.y < MAX_MATRIX_SIZE);
 }
 
 void WriteMatrix(const Matrix& matrix, std::ostream& output)
@@ -121,6 +122,7 @@ void Fill(const Matrix& matrix, const std::vector<Position>& startPoints, std::o
 		std::vector<Position> newWave;
 		for (Position pos : wave)
 		{
+			// Вынести в отдельную функцию
 			for (Position possibleWay : 
 				{ Position(pos.x + 1, pos.y), Position(pos.x - 1, pos.y), 
 				  Position(pos.x, pos.y + 1), Position(pos.x, pos.y - 1) })
@@ -153,6 +155,7 @@ void GetMatrixAndFill(std::istream& input, std::ostream& output)
 	bool eof = false;
 	for (int j = 0; j < MAX_MATRIX_SIZE; j++)
 	{
+		// Разобраться с условиясми
 		matrix.field[j].resize(MAX_MATRIX_SIZE);
 		if (!eof && !std::getline(input, line))
 		{
@@ -180,6 +183,7 @@ void GetMatrixAndFill(std::istream& input, std::ostream& output)
 
 void ParseStreamsInfoAndFill(ProgramMode type, const std::string& inputFileName, const std::string& outputFileName)
 {
+	// Вынести такую логику в main
 	switch (type)
 	{
 	case ProgramMode::Info:
