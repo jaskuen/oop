@@ -9,6 +9,7 @@ std::string HtmlDecode(const std::string& html)
     std::string possibleEntity, decodedString;
     for (char ch : html)
     {
+        // упростить функцию, поправить баг
         if (possibleEntity.size() == 0)
         {
             if (ch != '&')

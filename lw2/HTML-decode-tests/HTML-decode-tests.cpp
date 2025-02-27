@@ -9,6 +9,7 @@ SCENARIO("EMPTY STRING")
 	REQUIRE(result == "");
 }
 
+// Явно указывать вход и выход в тестах
 SCENARIO("STRING CONTAINS ONLY ENTITY")
 {
 	bool failed = false;
@@ -51,3 +52,5 @@ SCENARIO("SPACE BETWEEN & AND ENTITY BODY")
 	std::string result = HtmlDecode(input);
 	REQUIRE(result == input);
 }
+
+// Проверка на неизвестные сущности
