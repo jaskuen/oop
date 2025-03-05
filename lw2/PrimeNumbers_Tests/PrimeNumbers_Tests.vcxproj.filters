@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="PrimeNumbers_Tests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Prime.cpp">
+    <ClCompile Include="..\PrimeNumbers\Prime.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Prime.h">
+    <ClInclude Include="..\PrimeNumbers\Prime.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
