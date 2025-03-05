@@ -9,20 +9,39 @@ SCENARIO("EMPTY STRING")
 	REQUIRE(result == "");
 }
 
-// Явно указывать вход и выход в тестах
-SCENARIO("STRING CONTAINS ONLY ENTITY")
+SCENARIO("STRING CONTAINS ONLY &quot; ENTITY")
 {
-	bool failed = false;
-	for (std::string input : {"&quot;", "&apos;", "&lt;", "&gt;", "&amp;"})
-	{
-		std::string result = HtmlDecode(input);
-		failed = result != std::format("{}", ENTITY_TO_CHAR.at(input));
-		if (failed)
-		{
-			break;
-		}
-	}
-	REQUIRE(!failed);
+	std::string input = "&quot;";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == "\"");
+}
+
+SCENARIO("STRING CONTAINS ONLY &apos; ENTITY")
+{
+	std::string input = "&apos;";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == "\'");
+}
+
+SCENARIO("STRING CONTAINS ONLY &lt; ENTITY")
+{
+	std::string input = "&lt;";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == "<");
+}
+
+SCENARIO("STRING CONTAINS ONLY &gt; ENTITY")
+{
+	std::string input = "&gt;";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == ">");
+}
+
+SCENARIO("STRING CONTAINS ONLY &amp; ENTITY")
+{
+	std::string input = "&amp;";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == "&");
 }
 
 SCENARIO("EXAMPLE FROM GITHUB")
@@ -49,6 +68,20 @@ SCENARIO("NO ENTITIES")
 SCENARIO("SPACE BETWEEN & AND ENTITY BODY")
 {
 	std::string input = "Cat & lt;says& gt; & quot;Meow& quot;. M& amp;M& apos;s";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == input);
+}
+
+SCENARIO("& without ;")
+{
+	std::string input = "just &any string without entities.";
+	std::string result = HtmlDecode(input);
+	REQUIRE(result == input);
+}
+
+SCENARIO("UNKNOWN ENTITY")
+{
+	std::string input = "just &any; string without entities.";
 	std::string result = HtmlDecode(input);
 	REQUIRE(result == input);
 }
