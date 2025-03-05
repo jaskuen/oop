@@ -1,8 +1,10 @@
 #pragma once
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 enum class Language
 {
@@ -10,34 +12,23 @@ enum class Language
 	EN
 };
 
-struct Word
+using Vocabulary = std::multimap<std::string, std::string>;
+struct FullVocabulary
 {
-	std::string word;
-	Language lang;
+	Vocabulary ruEn, enRu;
+	FullVocabulary() {}
+	// Первый словарь в паре - Англ -> Рус, второй - Рус -> Англ
+	FullVocabulary(std::pair<Vocabulary, Vocabulary> vPair)
+	{
+		enRu = vPair.first;
+		ruEn = vPair.second;
+	}
 };
 
-struct Translations
-{
-	std::vector<std::string> english, russian;
-};
-using WordToId = std::map<std::string, int>;
-using Vocabulary = std::map<int, Translations>;
-
-std::string ReadWord(std::ifstream& file)
-{
-
-}
-
-Vocabulary ReadVocabularyFromFile(const std::string fileName)
-{
-	std::ifstream file(fileName);
-	if (!file.is_open())
-	{
-		throw std::runtime_error("Failed to open " + fileName + " for reading");
-	}
-	std::string line;
-	while (std::getline(file, line))
-	{
-
-	}
-}
+Language GetPhraseLanguage(const std::string& phrase);
+bool ReadPhrase(const std::string& phrase, FullVocabulary& v);
+std::ifstream OpenFileForReading(const std::string& fileName);
+std::ofstream OpenFileForWriting(const std::string& fileName);
+std::pair<Vocabulary, Vocabulary> ReadVocabularyFromFile(std::ifstream& file);
+void AskUserToSaveVocabulary(std::string fileName, const FullVocabulary& v);
+void SaveVocabulary(const std::string& fileName, const Vocabulary& v);
