@@ -4,13 +4,14 @@ const std::string LEAVE_PHRASE = "...";
 
 void ToLower(std::string& s)
 {
+	const unsigned char jot = 168; // символ Ё
 	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { 
 		std::string ru = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
 		if (ru.find(c) != std::string::npos)
 		{
 			return int(c + 32);
 		}
-		if (c == 168)
+		if (c == jot)
 		{
 			return int('ё');
 		}
@@ -33,7 +34,7 @@ Language GetPhraseLanguage(const std::string& phrase)
 void WritePhraseTranslations(const std::string& phrase, const Vocabulary& v)
 {
 	std::string result;
-	for (auto pair : v)
+	for (const auto& pair : v)
 	{
 		if (pair.first == phrase)
 		{
@@ -55,6 +56,7 @@ void SavePhraseInVocabularies(const std::string& phrase, const std::string& tran
 	opposite.insert({ translation, phrase });
 }
 
+// Передать по const& и создать копию
 bool ReadPhrase(std::string phrase, FullVocabulary& v)
 {
 	ToLower(phrase);
@@ -78,7 +80,6 @@ bool ReadPhrase(std::string phrase, FullVocabulary& v)
 	std::cout << "Неизвестная фраза \"" << phrase << "\".Введите перевод или пустую строку для отказа." << std::endl;
 	std::string translation;
 	std::getline(std::cin, translation);
-	ToLower(translation);
 
 	if (translation.size() == 0)
 	{

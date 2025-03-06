@@ -1,5 +1,6 @@
 ﻿#define CATCH_CONFIG_MAIN
 #include <iostream>
+#include <Windows.h>
 #include "../../catch2/catch.hpp"
 #include "../Vocabulary/Vocabulary.h"
 
@@ -46,17 +47,15 @@ SCENARIO("ADD WORD, CHECK IF LANGUAGE IS CHECKED CORRECTLY, CHECK IF TRANSLATION
 {
 	FullVocabulary v;
 	std::string en = "cat";
-	std::string ru = "кот";
-	if (GetPhraseLanguage(en) == Language::EN)
-	{
-		SavePhraseInVocabularies(en, ru, v.enRu, v.ruEn);
-	}
-	else
-	{
-		SavePhraseInVocabularies(en, ru, v.ruEn, v.enRu);
-	}
+	std::string ru1 = "кот";
+	std::string ru2 = "кошка";
+
+	SavePhraseInVocabularies(en, ru1, v.enRu, v.ruEn);
+	SavePhraseInVocabularies(en, ru2, v.enRu, v.ruEn);
 
 	REQUIRE(v.enRu.contains(en));
-	REQUIRE(v.enRu.find(en)->second == ru);
-	REQUIRE(v.ruEn.find(ru)->second == en);
+	REQUIRE(v.enRu.find(en)->second == ru1);
+
+	REQUIRE(v.ruEn.find(ru1)->second == en);
+	REQUIRE(v.ruEn.find(ru2)->second == en);
 }

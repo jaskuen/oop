@@ -6,6 +6,7 @@
 #include <fstream>
 #include <algorithm>
 
+// Ограничение в работе программы, убрать
 enum class Language
 {
 	RU,
@@ -18,13 +19,16 @@ struct FullVocabulary
 	Vocabulary ruEn, enRu;
 	FullVocabulary() {}
 	// Первый словарь в паре - Англ -> Рус, второй - Рус -> Англ
-	FullVocabulary(std::pair<Vocabulary, Vocabulary> vPair)
+	FullVocabulary(const std::pair<Vocabulary, Vocabulary>& vPair)
 	{
 		enRu = vPair.first;
 		ruEn = vPair.second;
 	}
 };
 
+// Добавить больше функций по работе со словарем для тестирования
+// Убрать функции, которые не нужны для работы словаря
+// Не давать пользователю работать со словарём FullV, кпростить логику
 void ToLower(std::string& s);
 Language GetPhraseLanguage(const std::string& phrase);
 bool ReadPhrase(std::string phrase, FullVocabulary& v);
