@@ -1,11 +1,27 @@
-#include "Vocabulary.h"
+п»ї#include "Vocabulary.h"
 
 const std::string LEAVE_PHRASE = "...";
+
+void ToLower(std::string& s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { 
+		std::string ru = "РђР‘Р’Р“Р”Р•Р–Р—РР™РљР›РњРќРћРџР РЎРўРЈР¤РҐР¦Р§РЁР©РЄР«Р¬Р­Р®РЇ";
+		if (ru.find(c) != std::string::npos)
+		{
+			return int(c + 32);
+		}
+		if (c == 168)
+		{
+			return int('С‘');
+		}
+		return std::tolower(c); 
+	});
+}
 
 Language GetPhraseLanguage(const std::string& phrase)
 {
 	std::string lower = phrase;
-	std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) { return std::tolower(c); });
+	ToLower(lower);
 	const char* enSymbols = "abcdefghijklmnopqrstuvwxyz";
 	if (std::any_of(lower.begin(), lower.end(), [enSymbols](char c) { return std::strchr(enSymbols, c) != nullptr; }))
 	{
@@ -32,16 +48,16 @@ void WritePhraseTranslations(const std::string& phrase, const Vocabulary& v)
 	std::cout << result << std::endl;
 }
 
-// Первый словарь в списке аргументов - основной, т.е. тот, который в ключе содержит слова языка, схожего с языком фразы
+// РџРµСЂРІС‹Р№ СЃР»РѕРІР°СЂСЊ РІ СЃРїРёСЃРєРµ Р°СЂРіСѓРјРµРЅС‚РѕРІ - РѕСЃРЅРѕРІРЅРѕР№, С‚.Рµ. С‚РѕС‚, РєРѕС‚РѕСЂС‹Р№ РІ РєР»СЋС‡Рµ СЃРѕРґРµСЂР¶РёС‚ СЃР»РѕРІР° СЏР·С‹РєР°, СЃС…РѕР¶РµРіРѕ СЃ СЏР·С‹РєРѕРј С„СЂР°Р·С‹
 void SavePhraseInVocabularies(const std::string& phrase, const std::string& translation, Vocabulary& main, Vocabulary& opposite)
 {
 	main.insert({ phrase, translation });
 	opposite.insert({ translation, phrase });
-	std::cout << "Фраза \"" << phrase << "\" сохранена в словаре как \"" << translation << "\"." << std::endl;
 }
 
-bool ReadPhrase(const std::string& phrase, FullVocabulary& v)
+bool ReadPhrase(std::string phrase, FullVocabulary& v)
 {
+	ToLower(phrase);
 	if (v.enRu.contains(phrase))
 	{
 		WritePhraseTranslations(phrase, v.enRu);
@@ -59,12 +75,14 @@ bool ReadPhrase(const std::string& phrase, FullVocabulary& v)
 		return false;
 	}
 
-	std::cout << "Неизвестная фраза \"" << phrase << "\".Введите перевод или пустую строку для отказа." << std::endl;
+	std::cout << "РќРµРёР·РІРµСЃС‚РЅР°СЏ С„СЂР°Р·Р° \"" << phrase << "\".Р’РІРµРґРёС‚Рµ РїРµСЂРµРІРѕРґ РёР»Рё РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ РґР»СЏ РѕС‚РєР°Р·Р°." << std::endl;
 	std::string translation;
 	std::getline(std::cin, translation);
+	ToLower(translation);
+
 	if (translation.size() == 0)
 	{
-		std::cout << "Фраза \"" << phrase << "\" проигнорирована." << std::endl;
+		std::cout << "Р¤СЂР°Р·Р° \"" << phrase << "\" РїСЂРѕРёРіРЅРѕСЂРёСЂРѕРІР°РЅР°." << std::endl;
 		return true;
 	}
 	if (translation == LEAVE_PHRASE)
@@ -75,10 +93,13 @@ bool ReadPhrase(const std::string& phrase, FullVocabulary& v)
 	if (GetPhraseLanguage(phrase) == Language::EN)
 	{
 		SavePhraseInVocabularies(phrase, translation, v.enRu, v.ruEn);
-		return true;
+	}
+	else
+	{
+		SavePhraseInVocabularies(phrase, translation, v.ruEn, v.enRu);
 	}
 
-	SavePhraseInVocabularies(phrase, translation, v.ruEn, v.enRu);
+	std::cout << "Р¤СЂР°Р·Р° \"" << phrase << "\" СЃРѕС…СЂР°РЅРµРЅР° РІ СЃР»РѕРІР°СЂРµ РєР°Рє \"" << translation << "\"." << std::endl;
 	return true;
 }
 
@@ -106,7 +127,7 @@ std::pair<Vocabulary, Vocabulary> ReadVocabularyFromFile(std::ifstream& file)
 {
 	Vocabulary ruEn, enRu;
 	std::string phrase, translation;
-	// В файл записываем сначала фразу на английском, а потом перевод на русский
+	// Р’ С„Р°Р№Р» Р·Р°РїРёСЃС‹РІР°РµРј СЃРЅР°С‡Р°Р»Р° С„СЂР°Р·Сѓ РЅР° Р°РЅРіР»РёР№СЃРєРѕРј, Р° РїРѕС‚РѕРј РїРµСЂРµРІРѕРґ РЅР° СЂСѓСЃСЃРєРёР№
 	while (std::getline(file, phrase))
 	{
 		std::getline(file, translation);
@@ -118,14 +139,14 @@ std::pair<Vocabulary, Vocabulary> ReadVocabularyFromFile(std::ifstream& file)
 
 void AskUserToSaveVocabulary(std::string fileName, const FullVocabulary& v)
 {
-	std::cout << "В словарь были внесены изменения. Введите Y или y для сохранения перед выходом." << std::endl;
+	std::cout << "Р’ СЃР»РѕРІР°СЂСЊ Р±С‹Р»Рё РІРЅРµСЃРµРЅС‹ РёР·РјРµРЅРµРЅРёСЏ. Р’РІРµРґРёС‚Рµ Y РёР»Рё y РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј." << std::endl;
 	char answer;
 	std::cin >> answer;
 	if (std::tolower(answer) == 'y')
 	{
 		if (fileName == "")
 		{
-			std::cout << "Введите имя файла для данного словаря: " << std::endl;
+			std::cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ С„Р°Р№Р»Р° РґР»СЏ РґР°РЅРЅРѕРіРѕ СЃР»РѕРІР°СЂСЏ: " << std::endl;
 			std::getline(std::cin, fileName);
 			std::getline(std::cin, fileName);
 		}

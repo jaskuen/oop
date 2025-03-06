@@ -25,8 +25,10 @@ struct FullVocabulary
 	}
 };
 
+void ToLower(std::string& s);
 Language GetPhraseLanguage(const std::string& phrase);
-bool ReadPhrase(const std::string& phrase, FullVocabulary& v);
+bool ReadPhrase(std::string phrase, FullVocabulary& v);
+void SavePhraseInVocabularies(const std::string& phrase, const std::string& translation, Vocabulary& main, Vocabulary& opposite);
 std::ifstream OpenFileForReading(const std::string& fileName);
 std::ofstream OpenFileForWriting(const std::string& fileName);
 std::pair<Vocabulary, Vocabulary> ReadVocabularyFromFile(std::ifstream& file);
