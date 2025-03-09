@@ -26,24 +26,36 @@ SCENARIO("UPPER = 1, 1 IS NOT PRIME")
 
 SCENARIO("UPPER = 2, IS ONLY PRIME HERE")
 {
-	Set set = GeneratePrimeNumbersSet(2);
-	REQUIRE(set.size() == 1);
-	REQUIRE(set.find(2) != set.cend());
+	Set set{2};
+	REQUIRE(GeneratePrimeNumbersSet(2) == set);
 }	
 
 SCENARIO("UPPER = 3, PRIMES ARE 2, 3")
 {
-	Set set = GeneratePrimeNumbersSet(3);
-	REQUIRE(set.size() == 2);
-	REQUIRE(set.find(2) != set.cend());
-	REQUIRE(set.find(3) != set.cend());
+	Set set{ 2, 3 };
+	REQUIRE(GeneratePrimeNumbersSet(3) == set);
 }
 
-SCENARIO("UPPER = 100000000, COUNT OF PRIMES IS 5761455, LESS THAN 12 SEC")
+SCENARIO("UPPER = 9, PRIMES ARE 2, 3, 5, 7")
 {
-	auto start = clock();
-	Set set = GeneratePrimeNumbersSet(100000000);
-	auto end = clock();
-	REQUIRE(set.size() == 5761455);
-	REQUIRE(end - start < 12000);
+	Set set{ 2, 3, 5, 7 };
+	REQUIRE(GeneratePrimeNumbersSet(9) == set);
 }
+
+SCENARIO("UPPER = 11, PRIMES ARE 2, 3, 5, 7, 11")
+{
+	Set set{ 2, 3, 5, 7, 11 };
+	REQUIRE(GeneratePrimeNumbersSet(11) == set);
+}
+
+#if !defined(_DEBUG)
+	SCENARIO("UPPER = 100000000, COUNT OF PRIMES IS 5761455, LESS THAN 12 SEC")
+	{
+		auto start = clock();
+		Set set = GeneratePrimeNumbersSet(100000000);
+		auto end = clock();
+		REQUIRE(set.size() == 5761455);
+		REQUIRE(end - start < 12000);
+	}
+#endif
+
