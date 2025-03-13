@@ -135,6 +135,7 @@
     <ClCompile Include="URL-parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="URL-parser-tools.h" />
     <ClInclude Include="URL-parser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

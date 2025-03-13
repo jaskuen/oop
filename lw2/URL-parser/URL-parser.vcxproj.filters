@@ -26,5 +26,8 @@
     <ClInclude Include="URL-parser.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="URL-parser-tools.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
