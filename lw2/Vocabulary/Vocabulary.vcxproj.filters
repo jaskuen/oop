@@ -26,5 +26,8 @@
     <ClInclude Include="Vocabulary.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Vocabulary-tools.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

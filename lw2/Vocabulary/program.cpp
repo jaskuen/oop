@@ -40,20 +40,16 @@ int main(int argc, char* argv[])
     {
         auto args = ParseCommandLine(argc, argv);
         FullVocabulary v;
-        if (args->vocabularyFileName != "")
-        {
-            std::ifstream file = OpenFileForReading(args->vocabularyFileName);
-            v = ReadVocabularyFromFile(file);
-        }
+        ReadVocabularyFromFile(args->vocabularyFileName);
         std::string line;
         while (std::getline(std::cin, line))
         {
-            if (!ReadPhrase(line, v))
+            if (!SavePhrase(line, v))
             {
                 break;
             }
         }
-        AskUserToSaveVocabulary(args->vocabularyFileName, v);
+        SaveVocabulary(args->vocabularyFileName, v);
     }
     catch (const std::exception& e)
     {

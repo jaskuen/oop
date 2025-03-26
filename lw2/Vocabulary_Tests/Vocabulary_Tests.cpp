@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "../../catch2/catch.hpp"
 #include "../Vocabulary/Vocabulary.h"
+#include "../Vocabulary/Vocabulary-tools.h"
 
 SCENARIO("TO LOWER")
 {
@@ -25,10 +26,10 @@ SCENARIO("ENGLISH WORDS")
 	std::string word2 = "123127635D";
 	std::string word3 = "123123F1231231";
 	std::string word4 = "ENGLISH";
-	REQUIRE(GetPhraseLanguage(word1) == Language::EN);
-	REQUIRE(GetPhraseLanguage(word2) == Language::EN);
-	REQUIRE(GetPhraseLanguage(word3) == Language::EN);
-	REQUIRE(GetPhraseLanguage(word4) == Language::EN);
+	REQUIRE(IsMainVocabularyPhrase(word1));
+	REQUIRE(IsMainVocabularyPhrase(word2));
+	REQUIRE(IsMainVocabularyPhrase(word3));
+	REQUIRE(IsMainVocabularyPhrase(word4));
 }
 
 SCENARIO("RUSSIAN WORDS")
@@ -37,10 +38,10 @@ SCENARIO("RUSSIAN WORDS")
 	std::string word2 = "123127635Д";
 	std::string word3 = "123123Ф1231231";
 	std::string word4 = "Ёжик";
-	REQUIRE(GetPhraseLanguage(word1) == Language::RU);
-	REQUIRE(GetPhraseLanguage(word2) == Language::RU);
-	REQUIRE(GetPhraseLanguage(word3) == Language::RU);
-	REQUIRE(GetPhraseLanguage(word4) == Language::RU);
+	REQUIRE(!IsMainVocabularyPhrase(word1));
+	REQUIRE(!IsMainVocabularyPhrase(word2));
+	REQUIRE(!IsMainVocabularyPhrase(word3));
+	REQUIRE(!IsMainVocabularyPhrase(word4));
 }
 
 SCENARIO("ADD WORD, CHECK IF LANGUAGE IS CHECKED CORRECTLY, CHECK IF TRANSLATION IS FOUND CORRECTLY")
@@ -50,12 +51,14 @@ SCENARIO("ADD WORD, CHECK IF LANGUAGE IS CHECKED CORRECTLY, CHECK IF TRANSLATION
 	std::string ru1 = "кот";
 	std::string ru2 = "кошка";
 
-	SavePhraseInVocabularies(en, ru1, v.enRu, v.ruEn);
-	SavePhraseInVocabularies(en, ru2, v.enRu, v.ruEn);
+	SavePhraseInVocabularies(en, ru1, v.main, v.opposite);
+	SavePhraseInVocabularies(en, ru2, v.main, v.opposite);
 
-	REQUIRE(v.enRu.contains(en));
-	REQUIRE(v.enRu.find(en)->second == ru1);
+	REQUIRE(v.main.contains(en));
+	REQUIRE(v.main.find(en)->second == ru1);
 
-	REQUIRE(v.ruEn.find(ru1)->second == en);
-	REQUIRE(v.ruEn.find(ru2)->second == en);
+	REQUIRE(v.opposite.find(ru1)->second == en);
+	REQUIRE(v.opposite.find(ru2)->second == en);
 }
+
+

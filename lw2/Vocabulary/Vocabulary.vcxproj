@@ -135,6 +135,7 @@
     <ClCompile Include="Vocabulary.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Vocabulary-tools.h" />
     <ClInclude Include="Vocabulary.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

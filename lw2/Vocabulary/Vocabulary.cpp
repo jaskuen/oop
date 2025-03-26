@@ -1,4 +1,5 @@
 ﻿#include "Vocabulary.h"
+#include "Vocabulary-tools.h"
 
 const std::string LEAVE_PHRASE = "...";
 
@@ -19,16 +20,16 @@ void ToLower(std::string& s)
 	});
 }
 
-Language GetPhraseLanguage(const std::string& phrase)
+bool IsMainVocabularyPhrase(const std::string& phrase)
 {
 	std::string lower = phrase;
 	ToLower(lower);
 	const char* enSymbols = "abcdefghijklmnopqrstuvwxyz";
 	if (std::any_of(lower.begin(), lower.end(), [enSymbols](char c) { return std::strchr(enSymbols, c) != nullptr; }))
 	{
-		return Language::EN;
+		return true;
 	}
-	return Language::RU;
+	return false;
 }
 
 void WritePhraseTranslations(const std::string& phrase, const Vocabulary& v)
@@ -56,19 +57,17 @@ void SavePhraseInVocabularies(const std::string& phrase, const std::string& tran
 	opposite.insert({ translation, phrase });
 }
 
-// Передать по const& и создать копию
-bool ReadPhrase(std::string phrase, FullVocabulary& v)
+bool CheckPhrase(const std::string& phrase, const FullVocabulary& v)
 {
-	ToLower(phrase);
-	if (v.enRu.contains(phrase))
+	if (v.main.contains(phrase))
 	{
-		WritePhraseTranslations(phrase, v.enRu);
+		WritePhraseTranslations(phrase, v.main);
 		return true;
 	}
 
-	if (v.ruEn.contains(phrase))
+	if (v.opposite.contains(phrase))
 	{
-		WritePhraseTranslations(phrase, v.ruEn);
+		WritePhraseTranslations(phrase, v.opposite);
 		return true;
 	}
 
@@ -76,7 +75,10 @@ bool ReadPhrase(std::string phrase, FullVocabulary& v)
 	{
 		return false;
 	}
+}
 
+bool SaveNewTranslation(const std::string& phrase, std::string& translation)
+{
 	std::cout << "Неизвестная фраза \"" << phrase << "\".Введите перевод или пустую строку для отказа." << std::endl;
 	std::string translation;
 	std::getline(std::cin, translation);
@@ -91,16 +93,33 @@ bool ReadPhrase(std::string phrase, FullVocabulary& v)
 		return false;
 	}
 
-	if (GetPhraseLanguage(phrase) == Language::EN)
+	if (IsMainVocabularyPhrase(phrase))
 	{
-		SavePhraseInVocabularies(phrase, translation, v.enRu, v.ruEn);
+		SavePhraseInVocabularies(phrase, translation, v.main, v.opposite);
 	}
 	else
 	{
-		SavePhraseInVocabularies(phrase, translation, v.ruEn, v.enRu);
+		SavePhraseInVocabularies(phrase, translation, v.opposite, v.main);
+	}
+	std::cout << "Фраза \"" << phrase << "\" сохранена в словаре как \"" << translation << "\"." << std::endl;
+	return true;
+}
+
+// Передать по const& и создать копию
+bool SavePhrase(const std::string& p, FullVocabulary& v)
+{
+	std::string phrase = p;
+	ToLower(phrase);
+	if (!CheckPhrase(phrase, v))
+	{
+		return false;
 	}
 
-	std::cout << "Фраза \"" << phrase << "\" сохранена в словаре как \"" << translation << "\"." << std::endl;
+	if (!SaveNewTranslation(phrase))
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -124,18 +143,19 @@ std::ofstream OpenFileForWriting(const std::string& fileName)
 	return file;
 }
 
-std::pair<Vocabulary, Vocabulary> ReadVocabularyFromFile(std::ifstream& file)
+FullVocabulary ReadVocabularyFromFile(const std::string& fileName)
 {
-	Vocabulary ruEn, enRu;
+	std::ifstream file = OpenFileForReading(fileName);
+	FullVocabulary v;
 	std::string phrase, translation;
 	// В файл записываем сначала фразу на английском, а потом перевод на русский
 	while (std::getline(file, phrase))
 	{
 		std::getline(file, translation);
-		enRu.insert({ phrase, translation });
-		ruEn.insert({ translation, phrase });
+		v.main.insert({ phrase, translation });
+		v.opposite.insert({ translation, phrase });
 	}
-	return { enRu, ruEn };
+	return v;
 }
 
 void AskUserToSaveVocabulary(std::string fileName, const FullVocabulary& v)
@@ -151,15 +171,15 @@ void AskUserToSaveVocabulary(std::string fileName, const FullVocabulary& v)
 			std::getline(std::cin, fileName);
 			std::getline(std::cin, fileName);
 		}
-		SaveVocabulary(fileName, v.enRu);
+		SaveVocabulary(fileName, v);
 	}
 	
 }
 
-void SaveVocabulary(const std::string& fileName, const Vocabulary& v)
+void SaveVocabulary(const std::string& fileName, const FullVocabulary& v)
 {
 	std::ofstream file = OpenFileForWriting(fileName);
-	for (const auto& pair : v)
+	for (const auto& pair : v.main)
 	{
 		file << pair.first << std::endl << pair.second << std::endl;
 	}
