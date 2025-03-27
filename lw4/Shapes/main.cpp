@@ -10,6 +10,7 @@ const std::string WINDOW_NAME = "DrawShapes";
 int main()
 {
     sf::ContextSettings settings;
+    settings.antiAliasingLevel = 16;
 
     sf::RenderWindow window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), WINDOW_NAME, sf::State::Windowed, settings);
 

@@ -30,7 +30,7 @@ private:
 	void AddTriangle();
 	IShape* GetMaxAreaShape() const;
 	IShape* GetMinPerimeterShape() const;
-	static uint32_t StringToUint32(const std::string& value);
+	static uint32_t GetHexColor(const std::string& value);
 
 	std::istream& m_input;
 	std::ostream& m_output;

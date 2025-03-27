@@ -29,7 +29,7 @@ void CCanvasController::HandleCommand()
 	}
 	else
 	{
-		m_output << "Unknown command!" << std::endl;
+		m_output << "Incorrect command" << std::endl;
 	}
 }
 
@@ -40,11 +40,10 @@ void CCanvasController::PrintResult()
 		m_output << "No shapes" << std::endl;
 		return;
 	}
-	m_output << "Shape with max circleArea:" << std::endl;
+	m_output << "Shape with max area:" << std::endl;
 	CCanvasController::PrintShape(CCanvasController::GetMaxAreaShape());
 
-	m_output << std::endl
-		<< "Shape with min circlePerimeter:" << std::endl;
+	m_output << std::endl << "Shape with min perimeter:" << std::endl;
 	CCanvasController::PrintShape(CCanvasController::GetMinPerimeterShape());
 }
 
@@ -65,8 +64,8 @@ void CCanvasController::AddRectangle()
 	{
 		throw std::invalid_argument("Invalid count of arguments to create rectangle");
 	}
-	const auto fillColor = CCanvasController::StringToUint32(fillColorString);
-	const auto outlineColor = CCanvasController::StringToUint32(outlineColorString);
+	const auto fillColor = CCanvasController::GetHexColor(fillColorString);
+	const auto outlineColor = CCanvasController::GetHexColor(outlineColorString);
 	auto rectangle = std::make_unique<CRectangle>(CPoint({ x, y }), width, height, fillColor, outlineColor);
 
 	m_shapes.push_back(std::move(rectangle));
@@ -80,7 +79,7 @@ void CCanvasController::AddLine()
 	{
 		throw std::invalid_argument("Invalid count of arguments to create line");
 	}
-	const auto lineColor = CCanvasController::StringToUint32(lineColorString);
+	const auto lineColor = CCanvasController::GetHexColor(lineColorString);
 	auto line = std::make_unique<CLineSegment>(CPoint{ startX, startY }, CPoint{ endX, endY }, lineColor);
 
 	m_shapes.push_back(std::move(line));
@@ -94,8 +93,8 @@ void CCanvasController::AddCircle()
 	{
 		throw std::invalid_argument("Invalid count of arguments to create circle");
 	}
-	const auto fillColor = CCanvasController::StringToUint32(fillColorString);
-	const auto outlineColor = CCanvasController::StringToUint32(outlineColorString);
+	const auto fillColor = CCanvasController::GetHexColor(fillColorString);
+	const auto outlineColor = CCanvasController::GetHexColor(outlineColorString);
 	auto circle = std::make_unique<CCircle>(CPoint{ x, y }, radius, fillColor, outlineColor);
 
 	m_shapes.push_back(std::move(circle));
@@ -109,8 +108,8 @@ void CCanvasController::AddTriangle()
 	{
 		throw std::invalid_argument("Invalid count of arguments to create triangle");
 	}
-	const auto fillColor = CCanvasController::StringToUint32(fillColorString);
-	const auto outlineColor = CCanvasController::StringToUint32(outlineColorString);
+	const auto fillColor = CCanvasController::GetHexColor(fillColorString);
+	const auto outlineColor = CCanvasController::GetHexColor(outlineColorString);
 	auto triangle = std::make_unique<CTriangle>(
 		CPoint{ x1, y1 },
 		CPoint{ x2, y2 },
@@ -157,7 +156,7 @@ IShape* CCanvasController::GetMinPerimeterShape() const
 	return nullptr;
 }
 
-uint32_t CCanvasController::StringToUint32(const std::string& value)
+uint32_t CCanvasController::GetHexColor(const std::string& value)
 {
 	if (value.length() != 6)
 	{
