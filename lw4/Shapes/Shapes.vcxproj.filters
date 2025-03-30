@@ -101,9 +101,6 @@
     <ClInclude Include="CLineSegment.h">
       <Filter>Исходные файлы\Classes\Shape\LineSegment</Filter>
     </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="CCanvasController.h">
       <Filter>Исходные файлы\Classes\CanvasController</Filter>
     </ClInclude>

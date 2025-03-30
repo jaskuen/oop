@@ -28,6 +28,7 @@ private:
 	void AddLine();
 	void AddCircle();
 	void AddTriangle();
+	// unique ptr
 	IShape* GetMaxAreaShape() const;
 	IShape* GetMinPerimeterShape() const;
 	static uint32_t GetHexColor(const std::string& value);
