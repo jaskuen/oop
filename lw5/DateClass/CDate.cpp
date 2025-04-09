@@ -66,12 +66,12 @@ DateFormat ToDateFormat(unsigned timestamp)
 	DateFormat date;
 	unsigned daysLeft = timestamp;
 	// year
-	while (true)
+	while (daysLeft > 0)
 	{
 		unsigned yearDays = IsLeap(date.year + 1) ? 366 : 365;
 		if (daysLeft < yearDays)
 		{
-			return DateFormat();
+			break;
 		}
 
 		daysLeft -= yearDays;
@@ -79,12 +79,12 @@ DateFormat ToDateFormat(unsigned timestamp)
 	}
 
 	// month
-	while (true)
+	while (daysLeft > 0)
 	{
 		unsigned monthDays = GetMonthDays(date.month, date.year);
 		if (daysLeft < monthDays)
 		{
-			return DateFormat();
+			break;
 		}
 
 		daysLeft -= monthDays;
@@ -92,6 +92,8 @@ DateFormat ToDateFormat(unsigned timestamp)
 	}
 
 	date.day = daysLeft + 1;
+
+	return date;
 }
 
 // Class methods
@@ -138,7 +140,7 @@ WeekDay CDate::GetWeekDay() const
 {
 	if (!IsValid())
 	{
-		return WeekDay::MONDAY;
+		return WeekDay::SUNDAY;
 	}
 	return static_cast<WeekDay>((m_timestamp + 4) % 7);
 }
@@ -187,14 +189,14 @@ CDate CDate::operator--(int)
 CDate CDate::operator+(int days)
 {
 	CDate date = *this;
-	*this += days;
+	date += days;
 	return date;
 }
 
 CDate CDate::operator-(int days)
 {
 	CDate date = *this;
-	*this -= days;
+	date -= days;
 	return date;
 }
 
@@ -220,7 +222,7 @@ CDate& CDate::operator-=(int days)
 	}
 	else
 	{
-		m_timestamp = 0;
+		m_timestamp = -1;
 	}
 	return *this;
 }
@@ -289,7 +291,7 @@ std::istream& operator>>(std::istream& is, CDate& date)
 	}
 	else
 	{
-		date.m_timestamp = 0;
+		date.m_timestamp = -1;
 	}
 
 	return is;
