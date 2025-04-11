@@ -10,6 +10,7 @@ enum class Month
 };
 
 // День недели
+// Добавить невалидный день недели
 enum class WeekDay
 {
     SUNDAY = 0, MONDAY, TUESDAY, WEDNESDAY,
@@ -58,17 +59,17 @@ public:
 
     CDate operator+(int days);
     CDate operator-(int days);
-    int operator-(const CDate& date);
+    int operator-(const CDate& date) const;
 
     CDate& operator+=(int days);
     CDate& operator-=(int days);
 
-    bool operator==(const CDate& date);
-    bool operator!=(const CDate& date);
-    bool operator>(const CDate& date);
-    bool operator<(const CDate& date);
-    bool operator>=(const CDate& date);
-    bool operator<=(const CDate& date);
+    bool operator==(const CDate& date) const;
+    bool operator!=(const CDate& date) const;
+    bool operator>(const CDate& date) const;
+    bool operator<(const CDate& date) const;
+    bool operator>=(const CDate& date) const;
+    bool operator<=(const CDate& date) const;
 
     friend std::ostream& operator<<(std::ostream& os, const CDate& date);
     friend std::istream& operator>>(std::istream& is, CDate& date);

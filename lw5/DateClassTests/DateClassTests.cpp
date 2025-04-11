@@ -60,12 +60,19 @@ SCENARIO("CDATE TIMESTAMP CTOR")
 SCENARIO("++")
 {
 	CDate startDate;
+	CDate lastDate(31, Month::DECEMBER, 9999);
 
 	startDate++;
 	REQUIRE(startDate.GetDay() == 2);
 
 	++startDate;
 	REQUIRE(startDate.GetDay() == 3);
+
+	lastDate++;
+	REQUIRE_FALSE(lastDate.IsValid());
+
+	lastDate--;
+	REQUIRE_FALSE(lastDate.IsValid());
 }
 
 SCENARIO("--")
@@ -77,6 +84,9 @@ SCENARIO("--")
 
 	--startDate;
 	REQUIRE(startDate.GetDay() == 1);
+
+	startDate--;
+	REQUIRE_FALSE(startDate.IsValid());
 }
 
 SCENARIO("+=")

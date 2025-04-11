@@ -16,9 +16,6 @@
     <Filter Include="Исходные файлы\CDate">
       <UniqueIdentifier>{897ecf7d-087a-4b64-bf48-5396fab5420c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\CDate\CLeapYearListCreator">
-      <UniqueIdentifier>{1d307ec6-10be-41d3-b527-c504d757e27f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,16 +24,10 @@
     <ClCompile Include="CDate.cpp">
       <Filter>Исходные файлы\CDate</Filter>
     </ClCompile>
-    <ClCompile Include="CLeapYearListCreator.cpp">
-      <Filter>Исходные файлы\CDate\CLeapYearListCreator</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CDate.h">
       <Filter>Исходные файлы\CDate</Filter>
-    </ClInclude>
-    <ClInclude Include="CLeapYearListCreator.h">
-      <Filter>Исходные файлы\CDate\CLeapYearListCreator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

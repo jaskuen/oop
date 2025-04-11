@@ -1,4 +1,4 @@
-#include "CDate.h"
+﻿#include "CDate.h"
 
 // Non-class methods to create and work with date parts
 
@@ -15,6 +15,8 @@ struct DateFormat
 		day = 1;
 	}
 };
+
+const unsigned MAX_DATE_TIMESTAMP = 2932896;
 
 bool IsLeap(unsigned year)
 {
@@ -109,7 +111,7 @@ CDate::CDate(unsigned timestamp)
 	m_timestamp = timestamp;
 	if (!IsValid())
 	{
-		m_timestamp = 0;
+		m_timestamp = -1;
 	}
 }
 
@@ -140,6 +142,7 @@ WeekDay CDate::GetWeekDay() const
 {
 	if (!IsValid())
 	{
+		// Возвращать ошибку при невалидной дате
 		return WeekDay::SUNDAY;
 	}
 	return static_cast<WeekDay>((m_timestamp + 4) % 7);
@@ -148,7 +151,7 @@ WeekDay CDate::GetWeekDay() const
 bool CDate::IsValid() const
 {
 	DateFormat date = ToDateFormat(m_timestamp);
-	return m_timestamp != -1 &&
+	return m_timestamp != -1 && m_timestamp <= MAX_DATE_TIMESTAMP &&
 		date.day >= 1 && date.day <= GetMonthDays(date.month, date.year) &&
 		date.month >= Month::JANUARY && date.month <= Month::DECEMBER &&
 		date.year >= 1970 && date.year <= 9999;
@@ -200,7 +203,7 @@ CDate CDate::operator-(int days)
 	return date;
 }
 
-int CDate::operator-(const CDate& date)
+int CDate::operator-(const CDate& date) const
 {
 	return static_cast<unsigned>(m_timestamp) - static_cast<unsigned>(date.m_timestamp);
 }
@@ -227,32 +230,32 @@ CDate& CDate::operator-=(int days)
 	return *this;
 }
 
-bool CDate::operator==(const CDate& date)
+bool CDate::operator==(const CDate& date) const
 {
 	return this->m_timestamp == date.m_timestamp;
 }
 
-bool CDate::operator!=(const CDate& date)
+bool CDate::operator!=(const CDate& date) const
 {
 	return !(*this == date);
 }
 
-bool CDate::operator>(const CDate& date)
+bool CDate::operator>(const CDate& date) const
 {
 	return this->m_timestamp > date.m_timestamp;
 }
 
-bool CDate::operator<(const CDate& date)
+bool CDate::operator<(const CDate& date) const
 {
 	return this->m_timestamp < date.m_timestamp;
 }
 
-bool CDate::operator>=(const CDate& date)
+bool CDate::operator>=(const CDate& date) const
 {
 	return !(*this < date);
 }
 
-bool CDate::operator<=(const CDate& date)
+bool CDate::operator<=(const CDate& date) const
 {
 	return !(*this > date);
 }
@@ -277,7 +280,7 @@ std::ostream& operator<<(std::ostream& os, const CDate& date)
 	{
 		os << "0";
 	}
-	os << month << "." << formated.year;
+	return os << month << "." << formated.year;
 }
 
 std::istream& operator>>(std::istream& is, CDate& date)
