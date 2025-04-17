@@ -243,4 +243,7 @@ SCENARIO("GETWEEKDAY")
 {
 	CDate currentDate(10, Month::APRIL, 2025);
 	REQUIRE(currentDate.GetWeekDay() == WeekDay::THURSDAY);
+
+	CDate invalidDate(99, Month::APRIL, 1234);
+	REQUIRE(currentDate.GetWeekDay() == WeekDay::INVALID);
 }

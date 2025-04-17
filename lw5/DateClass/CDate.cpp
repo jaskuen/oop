@@ -142,8 +142,8 @@ WeekDay CDate::GetWeekDay() const
 {
 	if (!IsValid())
 	{
-		// Возвращать ошибку при невалидной дате
-		return WeekDay::SUNDAY;
+		// Выбрасывать исключение
+		return WeekDay::INVALID;
 	}
 	return static_cast<WeekDay>((m_timestamp + 4) % 7);
 }
@@ -156,6 +156,17 @@ bool CDate::IsValid() const
 		date.month >= Month::JANUARY && date.month <= Month::DECEMBER &&
 		date.year >= 1970 && date.year <= 9999;
 }
+
+// Добавить исключение при попытке работать с невалидной датой
+//void AssertValidData()
+//{
+//	if (IsValid())
+//	{
+//		return;
+//	}
+
+//	throw std::out_of_range("INVALID DATA");
+//}
 
 CDate& CDate::operator++()
 {

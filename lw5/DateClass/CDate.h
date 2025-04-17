@@ -14,7 +14,7 @@ enum class Month
 enum class WeekDay
 {
     SUNDAY = 0, MONDAY, TUESDAY, WEDNESDAY,
-    THURSDAY, FRIDAY, SATURDAY
+    THURSDAY, FRIDAY, SATURDAY, INVALID
 };
 
 // Дата в формате день-месяц-год. Год в диапазоне от 1970 до 9999
