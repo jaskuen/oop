@@ -11,7 +11,7 @@ TEST_CASE("Default ctor") {
     REQUIRE(std::strcmp(str.GetStringData(), "") == 0);
 }
 
-TEST_CASE("STL string ctor") {
+TEST_CASE("С-string ctor") {
     CMyString str("pizza");
     REQUIRE(str.GetLength() == 5);
     REQUIRE(str.GetCapacity() == 6);
@@ -23,6 +23,8 @@ TEST_CASE("C-string with length ctor") {
     REQUIRE(str.GetLength() == 5);
     REQUIRE(str.GetCapacity() == 6);
     REQUIRE(std::strcmp(str.GetStringData(), "pizza") == 0);
+
+    REQUIRE_THROWS_AS(CMyString("aaaa", -1), std::out_of_range);
 }
 
 TEST_CASE("Copy ctor") {
@@ -51,21 +53,7 @@ TEST_CASE("STL String ctor") {
     REQUIRE(std::strcmp(str.GetStringData(), "test") == 0);
 }
 
-TEST_CASE("GetLength") {
-    CMyString str("pizza");
-    REQUIRE(str.GetLength() == 5);
-
-    CMyString empty;
-    REQUIRE(empty.GetLength() == 0);
-}
-
-TEST_CASE("GetStringData") {
-    CMyString str("pizza");
-    REQUIRE(std::strcmp(str.GetStringData(), "pizza") == 0);
-
-    CMyString empty;
-    REQUIRE(std::strcmp(empty.GetStringData(), "") == 0);
-}
+// Излишние тесты
 
 TEST_CASE("SubString") {
     CMyString str("pizza sushi");
@@ -84,6 +72,11 @@ TEST_CASE("Clear") {
     str.Clear();
     REQUIRE(str.GetLength() == 0);
     REQUIRE(std::strcmp(str.GetStringData(), "") == 0);
+
+    CMyString empty;
+    str.Clear();
+    REQUIRE(str.GetLength() == 0);
+    REQUIRE(std::strcmp(str.GetStringData(), "") == 0);
 }
 
 TEST_CASE("operator=") {
@@ -98,6 +91,7 @@ TEST_CASE("operator=") {
     REQUIRE(std::strcmp(str2.GetStringData(), "pizza") == 0);
 }
 
+
 TEST_CASE("move operator=") {
     CMyString str1("pizza");
     CMyString str2;
@@ -106,6 +100,10 @@ TEST_CASE("move operator=") {
     REQUIRE(std::strcmp(str2.GetStringData(), "pizza") == 0);
     REQUIRE(str1.GetLength() == 0);
     REQUIRE(std::strcmp(str1.GetStringData(), "") == 0);
+
+    str2 = std::move(str2);
+    REQUIRE(str2.GetLength() == 5);
+    REQUIRE(std::strcmp(str2.GetStringData(), "pizza") == 0);
 }
 
 TEST_CASE("operator+") {
@@ -151,10 +149,7 @@ TEST_CASE("Index operator") {
     str[0] = 'P';
     REQUIRE(str[0] == 'P');
 
-    char outOfRange;
-
     REQUIRE_THROWS_AS(str[5], std::out_of_range);
-    REQUIRE_THROWS_AS(outOfRange = str[5], std::out_of_range);
 }
 
 TEST_CASE("Const index operator") {
@@ -203,3 +198,5 @@ TEST_CASE("Concatenation with null characters")
     REQUIRE(std::memcmp(result.GetStringData(), expected, 6) == 0);
     REQUIRE(result.GetStringData()[6] == '\0');
 }
+
+// Добавить больше тестов, ломающих программу

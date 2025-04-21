@@ -12,10 +12,9 @@ void ReleaseMemory(const char* chars)
 	delete[] chars;
 }
 
+// '\0'
 CMyString::CMyString()
-	: m_capacity(1),
-	  m_size(0),
-	  m_chars(Allocate(1))
+	: CMyString("", 0)
 {
 }
 
@@ -24,6 +23,11 @@ CMyString::CMyString(const char* pString, size_t length)
 	m_size(length),
 	m_chars(Allocate(length + 1))
 {
+	if (length < 0)
+	{
+		throw std::out_of_range("Wrong lenght parameter value");
+	}
+
 	auto end = std::uninitialized_copy_n(pString, m_size, m_chars);
 	*end = '\0';
 }
@@ -38,14 +42,12 @@ CMyString::CMyString(CMyString const& other)
 {
 }
 
+// std::move/exchange
 CMyString::CMyString(CMyString&& other) noexcept
-	: m_size(other.m_size),
-	m_capacity(other.m_capacity),
-	m_chars(other.m_chars)
+	: m_size(std::exchange(other.m_size, 0)),
+	m_capacity(std::exchange(other.m_capacity, 1)),
+	m_chars(std::exchange(other.m_chars, Allocate(1)))
 {
-	other.m_size = 0;
-	other.m_capacity = 1;
-	other.m_chars = Allocate(1);
 }
 
 CMyString::CMyString(std::string const& stlString)
@@ -55,7 +57,10 @@ CMyString::CMyString(std::string const& stlString)
 
 CMyString::~CMyString()
 {
-	ReleaseMemory(m_chars);
+	if (m_chars != s_emptyString)
+	{
+		ReleaseMemory(m_chars);
+	}
 }
 
 size_t CMyString::GetLength() const
@@ -80,12 +85,16 @@ CMyString CMyString::SubString(size_t start, size_t length) const
 	return CMyString(m_chars + start, finalLength);
 }
 
+// '\0'
 void CMyString::Clear()
 {
-	ReleaseMemory(m_chars);
+	if (m_chars != s_emptyString)
+	{
+		ReleaseMemory(m_chars);
+	}
 	m_capacity = 1;
-	m_chars = Allocate(1);
 	m_size = 0;
+	m_chars = s_emptyString;
 }
 
 size_t CMyString::GetCapacity()
@@ -95,8 +104,10 @@ size_t CMyString::GetCapacity()
 
 CMyString& CMyString::operator=(const CMyString& other)
 {
+	// Что делает верхняя ветка if
 	if (this != &other)
 	{
+		// оптимизация
 		if (m_capacity >= other.m_size && m_chars != s_emptyString)
 		{
 			std::destroy_n(m_chars, m_size + 1);

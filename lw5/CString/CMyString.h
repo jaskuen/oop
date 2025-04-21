@@ -73,6 +73,7 @@ public:
 private:
     size_t m_size = 0;
     size_t m_capacity = 0;
+    // Для чего используется
     inline static char s_emptyString[] = {'\0'};
     char* m_chars;
 };
