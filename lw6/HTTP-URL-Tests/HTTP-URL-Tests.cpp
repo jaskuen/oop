@@ -80,7 +80,8 @@ TEST_F(CHttpUrlTest, ParseUrl_InvalidPort)
 }
 
 // Ctor with domain, document and protocol
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocol_Valid) 
+// Wrong test input data
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocol_Valid) 
 {
     CHttpUrl url("example.com", "document", Protocol::HTTP);
     EXPECT_EQ(url.GetURL(), "http://example.com/document");
@@ -90,27 +91,27 @@ TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocol_Valid)
     EXPECT_EQ(url.GetDocument(), "/document");
 }
 
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocol_AddsSlash) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocol_AddsSlash) 
 {
     CHttpUrl url("example.com", "document", Protocol::HTTPS);
     EXPECT_EQ(url.GetURL(), "https://example.com/document");
     EXPECT_EQ(url.GetDocument(), "/document");
 }
 
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocol_EmptyDocument) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocol_EmptyDocument) 
 {
     CHttpUrl url("example.com", "", Protocol::HTTP);
     EXPECT_EQ(url.GetURL(), "http://example.com/");
     EXPECT_EQ(url.GetDocument(), "/");
 }
 
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocol_InvalidDomain) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocol_InvalidDomain) 
 {
     EXPECT_THROW(CHttpUrl("", "document", Protocol::HTTP), CUrlParsingError);
 }
 
 // Ctor with port
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocolPort_Valid) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocolPort_Valid) 
 {
     CHttpUrl url("example.com", "document", Protocol::HTTP, 8080);
     EXPECT_EQ(url.GetURL(), "http://example.com:8080/document");
@@ -120,21 +121,21 @@ TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocolPort_Valid)
     EXPECT_EQ(url.GetDocument(), "/document");
 }
 
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocolPort_DefaultPort) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocolPort_DefaultPort) 
 {
     CHttpUrl url("example.com", "document", Protocol::HTTPS, 443);
     EXPECT_EQ(url.GetURL(), "https://example.com/document");
     EXPECT_EQ(url.GetPort(), 443);
 }
 
-TEST_F(CHttpUrlTest, Ctor_DomainDocumentProtocolPort_PortOutOfRange) 
+TEST_F(CHttpUrlTest, CHttpUrl_Ctor_DomainDocumentProtocolPort_PortOutOfRange) 
 {
     EXPECT_THROW(CHttpUrl("example.com", "document", Protocol::HTTP, 0), std::out_of_range);
     EXPECT_THROW(CHttpUrl("example.com", "document", Protocol::HTTP, 65536), std::out_of_range);
 }
 
 // Protocol <<
-TEST_F(CHttpUrlTest, ProtocolOutput_Http) 
+TEST_F(CHttpUrlTest, CHttpUrl_ProtocolOutput) 
 {
     std::ostringstream oss;
     oss << Protocol::HTTP;
@@ -143,3 +144,5 @@ TEST_F(CHttpUrlTest, ProtocolOutput_Http)
     oss << Protocol::HTTPS;
     EXPECT_EQ(oss.str(), "https");
 }
+
+// Дополнить тестов, ломающих программу
