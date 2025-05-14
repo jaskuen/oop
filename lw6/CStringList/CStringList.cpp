@@ -1,34 +1,33 @@
 #include "CStringList.h"
 
-void CStringList::Allocate(size_t size)
-{
-	std::string* newData = new std::string[size]();
-	if (m_start == nullptr)
-	{
-		m_start = newData;
-		return;
-	}
-
-	std::copy(m_start, m_start + m_size, newData);
-	m_start = newData;
-}
-
 CStringList::CStringList()
-	: m_size(0),
-	m_start(nullptr)
+	: m_size(0), 
+	  m_start(nullptr),
+	  m_end(new Node("")) 
 {
+	m_start = m_end;
 }
+
 
 CStringList::CStringList(const CStringList& other)
-	: m_size(other.m_size)
+	: m_size(0),
+	m_start(nullptr),
+	m_end(new Node(""))
 {
-	Allocate(m_size);
-	std::copy(other.m_start, other.m_start + other.m_size, m_start);
+	m_start = m_end;
+	Node* ptr = other.m_start;
+	while (ptr != other.m_end)
+	{
+		PushBack(ptr->value);
+		ptr = ptr->next;
+	}
 }
+
 
 CStringList::CStringList(CStringList&& other) noexcept
 	: m_size(std::exchange(other.m_size, 0)),
-	m_start(std::exchange(other.m_start, nullptr))
+	m_start(std::exchange(other.m_start, nullptr)),
+	m_end(std::exchange(other.m_end, nullptr))
 {
 }
 
@@ -39,6 +38,7 @@ CStringList& CStringList::operator=(const CStringList& other)
 		CStringList copy{ other };
 		std::swap(m_size, copy.m_size);
 		std::swap(m_start, copy.m_start);
+		std::swap(m_end, copy.m_end);
 	}
 	return *this;
 }
@@ -49,6 +49,7 @@ CStringList& CStringList::operator=(CStringList&& other) noexcept
 	{
 		std::swap(m_size, other.m_size);
 		std::swap(m_start, other.m_start);
+		std::swap(m_end, other.m_end);
 	}
 	return *this;
 }
@@ -60,89 +61,90 @@ CStringList::~CStringList() noexcept
 
 void CStringList::PushBack(const std::string& str)
 {
-	Allocate(m_size + 1);
-	m_start[m_size++] = str;
-}
+	Node* newNode = new Node(str);
+	newNode->prev = m_end->prev;
+	newNode->next = m_end;
 
-void CStringList::PushFront(const std::string& str)
-{
-	Allocate(m_size + 1);
+	if (m_end->prev)
+	{
+		m_end->prev->next = newNode;
+	}
+	else
+	{
+		m_start = newNode;
+	}
 
-	std::string* newStart = new std::string[m_size + 1]();
-	newStart[0] = str;
-	std::copy(m_start, m_start + m_size, newStart + 1);
-
-	m_start = newStart;
+	m_end->prev = newNode;
 	m_size++;
 }
 
+
+void CStringList::PushFront(const std::string& str)
+{
+	Node* newNode = new Node(str);
+	newNode->next = m_start;
+	newNode->prev = nullptr;
+
+	if (m_start != m_end)
+	{
+		m_start->prev = newNode;
+	}
+	else
+	{
+		m_end->prev = newNode;
+	}
+
+	m_start = newNode;
+	m_size++;
+}
+
+	
 void CStringList::Clear()
 {
-	if (m_start != nullptr)
+	Node* current = m_start;
+	while (current != m_end)
 	{
-		delete[] m_start;
+		Node* next = current->next;
+		delete current;
+		current = next;
+		m_end->prev = nullptr;
 	}
-	m_start = nullptr;
+
+	m_start = m_end;
 	m_size = 0;
 }
+
 
 size_t CStringList::Size()
 {
 	return m_size;
 }
 
-std::string* CStringList::begin()
+void CStringList::Insert(iterator it, const std::string& value)
 {
-	if (m_start == nullptr)
+	Node* ptr = it.current;
+	Node* newNode = new Node(value);
+
+	newNode->next = ptr;
+	newNode->prev = ptr ? ptr->prev : nullptr;
+
+	if (newNode->prev)
 	{
-		throw std::out_of_range("List is empty");
+		newNode->prev->next = newNode;
 	}
-	return m_start;
-}
-
-const std::string* CStringList::cbegin() const
-{
-	if (m_start == nullptr)
+	else
 	{
-		throw std::out_of_range("List is empty");
+		m_start = newNode;
 	}
-	return m_start;
-}
 
-std::string* CStringList::end()
-{
-	if (m_start == nullptr)
+	if (ptr)
 	{
-		throw std::out_of_range("List is empty");
+		ptr->prev = newNode;
 	}
-	return m_start + m_size;
-}
-
-const std::string* CStringList::cend() const
-{
-	if (m_start == nullptr)
+	else
 	{
-		throw std::out_of_range("List is empty");
+		m_end->prev = newNode;
 	}
-	return m_start + m_size;
-}
 
-std::reverse_iterator<std::string*> CStringList::rbegin()
-{
-	return std::reverse_iterator<std::string*>(end());
-}
-
-std::reverse_iterator<const std::string*> CStringList::crbegin() const
-{
-	return std::reverse_iterator<const std::string*>(cend());
-}
-
-std::reverse_iterator<std::string*> CStringList::rend()
-{
-	return std::reverse_iterator<std::string*>(begin());
-}
-
-std::reverse_iterator<const std::string*> CStringList::crend() const
-{
-	return std::reverse_iterator<const std::string*>(cbegin());
+	m_size++;
 }

@@ -1,16 +1,30 @@
 ﻿#include <iostream>
+#include <list>
 #include "CStringList.h"
 
 int main()
 {
+    std::list<std::string> l;
+    l.push_back("1");
+    l.push_back("2");
+    l.push_back("3");
+
+    std::reverse_iterator<std::list<std::string>::iterator> it = l.rbegin();
+    while (it != l.rend())
+    {
+        std::cout << *it << std::endl;
+        it++;
+    }
+
+
     CStringList list;
     list.PushBack("a");
     list.PushBack("bcd");
     list.PushBack("efghij");
     std::cout << list.Size();
 
-    auto b = list.crbegin();
-    while (b != list.crend())
+    auto b = list.rbegin();
+    while (b != list.rend())
     {
         std::cout << *b << std::endl;
         b++;
