@@ -132,7 +132,7 @@ TEST_F(CStringListTest, Iterators)
     EXPECT_EQ(*it, "Test2");
 
     auto end = list.end();
-    ++it;
+    it++;
     EXPECT_EQ(it, end);
 
     const CStringList constList = list;
@@ -154,7 +154,7 @@ TEST_F(CStringListTest, ReverseIterators)
     EXPECT_EQ(*rit, "Test1");
 
     auto rend = list.rend();
-    ++rit;
+    rit++;
     EXPECT_EQ(rit, rend);
 
     const CStringList constList = list;
@@ -162,7 +162,7 @@ TEST_F(CStringListTest, ReverseIterators)
     EXPECT_EQ(*crit, "Test2");
     ++crit;
     EXPECT_EQ(*crit, "Test1");
-    ++crit;
+    crit++;
     EXPECT_EQ(crit, constList.crend());
 }
 
@@ -192,8 +192,8 @@ TEST_F(CStringListTest, InsertAtIteratorPosition)
     list.PushBack("D");
 
     auto it = list.begin();
-    ++it; // -> "B"
-    ++it; // -> "D"
+    it++; // -> "B"
+    it++; // -> "D"
 
     list.Insert(it, "C");
     
@@ -201,8 +201,7 @@ TEST_F(CStringListTest, InsertAtIteratorPosition)
     size_t i = 0;
     for (auto str : list)
     {
-        EXPECT_EQ(str, expected[i]);
-        ++i;
+        EXPECT_EQ(str, expected[i++]);
     }
 
     EXPECT_EQ(list.Size(), 4);
