@@ -1,5 +1,5 @@
 ﻿#include <gtest/gtest.h>
-#include "../CMyArray/CMyArray.h" // Убедитесь, что этот файл включен в ваш проект
+#include "../CMyArray/CMyArray.h"
 
 template <typename T>
 class CMyArrayTest : public ::testing::Test 
@@ -47,7 +47,6 @@ TYPED_TEST(CMyArrayTest, AccessOperator) {
 
     EXPECT_EQ(arr[0], value);
 
-    // Проверка на исключение при выходе за границы
     EXPECT_THROW(arr[1], std::out_of_range);
 }
 
