@@ -9,13 +9,7 @@ int main()
     l.push_back("2");
     l.push_back("3");
 
-    std::reverse_iterator<std::list<std::string>::iterator> it = l.rbegin();
-    while (it != l.rend())
-    {
-        std::cout << *it << std::endl;
-        it++;
-    }
-
+    auto it = l.rbegin();
 
     CStringList list;
     list.PushBack("a");

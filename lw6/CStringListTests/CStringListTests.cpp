@@ -184,7 +184,7 @@ TEST_F(CStringListTest, InsertByIterator)
     EXPECT_EQ(*iter, "C");
 }
 
-TEST_F(CStringListTest, InsertAtIteratorPosition)
+TEST_F(CStringListTest, Insert)
 {
     CStringList list;
     list.PushBack("A");
@@ -205,5 +205,53 @@ TEST_F(CStringListTest, InsertAtIteratorPosition)
     }
 
     EXPECT_EQ(list.Size(), 4);
+
+    auto cit = list.cend();
+    list.Insert(cit, "E");
+
+    expected.push_back("E");
+    i = 0;
+    for (auto str : list)
+    {
+        EXPECT_EQ(str, expected[i++]);
+    }
+
+    EXPECT_EQ(list.Size(), 5);
 }
 
+TEST_F(CStringListTest, Delete)
+{
+    CStringList list;
+    list.PushBack("A");
+    list.PushBack("B");
+    list.PushBack("D");
+
+    auto it = list.begin();
+    it++; // -> "B"
+
+    list.Delete(it);
+
+    std::vector<std::string> expected = { "A", "D" };
+    size_t i = 0;
+    for (auto str : list)
+    {
+        EXPECT_EQ(str, expected[i++]);
+    }
+
+    EXPECT_EQ(list.Size(), 2);
+
+    auto cit = list.cend();
+    cit--; // -> "D"
+
+    list.Delete(cit);
+
+    expected = { "A" };
+    i = 0;
+    for (auto str : list)
+    {
+        EXPECT_EQ(str, expected[i++]);
+    }
+
+    EXPECT_EQ(list.Size(), 1);
+    EXPECT_THROW(list.Delete(list.end()), std::out_of_range);
+}

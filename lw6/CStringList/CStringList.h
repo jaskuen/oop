@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <iterator>
 #include <string>
@@ -22,33 +22,33 @@ struct Node
 class CStringList
 {
 public:
-	// Конструкторы
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 
 	CStringList();
 	CStringList(const CStringList& other);
 	CStringList(CStringList&& other) noexcept;
 
-	// Операторы присваивания
+	// РћРїРµСЂР°С‚РѕСЂС‹ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 	CStringList& operator=(const CStringList& other);
 	CStringList& operator=(CStringList&& other) noexcept;
 
-	// Деструктор
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 
 	~CStringList() noexcept;
 
-	// Вставка
+	// Р’СЃС‚Р°РІРєР°
 
 	void PushBack(const std::string& str);
 	void PushFront(const std::string& str);
 
-	// Очистка
+	// РћС‡РёСЃС‚РєР°
 	void Clear();
 
-	// Получение размера списка
+	// РџРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
 	size_t Size();
 
-	// Итераторы
+	// РС‚РµСЂР°С‚РѕСЂС‹
 
 	class iterator 
 	{
@@ -141,6 +141,9 @@ public:
 			return &current->value; 
 		}
 
+		// Р”Р»СЏ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РІ iterator
+		operator iterator() const { return iterator(const_cast<Node *>(current)); }
+
 		const_iterator& operator++() 
 		{ 
 			current = current->next; 
@@ -208,8 +211,11 @@ public:
 		return std::reverse_iterator<const_iterator>(cbegin());
 	}
 
-// Вставка по итератору
+// Р’СЃС‚Р°РІРєР° РїРѕ РёС‚РµСЂР°С‚РѕСЂСѓ
 	void Insert(iterator it, const std::string& value);
+	void Insert(const_iterator it, const std::string& value);
+	void Delete(iterator it);
+	void Delete(const_iterator it);
 private:
 	Node* m_start;
 	Node* m_end;

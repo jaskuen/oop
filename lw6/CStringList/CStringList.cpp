@@ -1,4 +1,4 @@
-#include "CStringList.h"
+﻿#include "CStringList.h"
 
 CStringList::CStringList()
 	: m_size(0), 
@@ -148,3 +148,45 @@ void CStringList::Insert(iterator it, const std::string& value)
 
 	m_size++;
 }
+
+void CStringList::Insert(const_iterator it, const std::string& value)
+{
+	Insert(static_cast<iterator>(it), value);
+}
+
+void CStringList::Delete(iterator it)
+{
+	if (it.current == m_end) // Нельзя удалять фиктивный узел
+	{
+		throw std::out_of_range("Cannot delete end iterator");
+	}
+
+	Node* node = it.current;
+
+	if (node->prev)
+	{
+		node->prev->next = node->next;
+	}
+	else
+	{
+		m_start = node->next; // Удаляется голова
+	}
+
+	if (node->next)
+	{
+		node->next->prev = node->prev;
+	}
+	else
+	{
+		m_end->prev = node->prev; // Удаляется хвост
+	}
+
+	delete node;
+	m_size--;
+}
+
+void CStringList::Delete(const_iterator it)
+{
+	Delete(static_cast<iterator>(it));
+}
+
