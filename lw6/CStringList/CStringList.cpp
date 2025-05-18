@@ -107,7 +107,7 @@ void CStringList::Clear()
 		Node* next = current->next;
 		delete current;
 		current = next;
-		m_end->prev = nullptr;
+		current->prev = nullptr;
 	}
 
 	m_start = m_end;
