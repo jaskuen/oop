@@ -13,10 +13,10 @@ struct Man
 int main()
 {
     std::vector<Man> mans;
+    Man highest;
     mans.push_back({ 20, 180 });
     mans.push_back({ 25, 195 });
-    int maxHeight;
-    bool a = FindMax(mans, maxHeight, [](const Man& a, const Man& b) {return a.height < b.height;});
+    bool a = FindMax(mans, highest, [](const Man& a, const Man& b) {return a.height < b.height;});
     std::cout << "Hello World!\n";
 }
 
