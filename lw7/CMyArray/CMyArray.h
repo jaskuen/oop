@@ -44,6 +44,9 @@ private:
 
 // Реализация класса
 
+
+// обрабатывать утечку памяти для std::copy / использовать memcpy
+
 template<typename T>
 void CMyArray<T>::Allocate(size_t size)
 {
@@ -122,6 +125,7 @@ inline size_t CMyArray<T>::Capacity()
 template<typename T>
 void CMyArray<T>::Resize(size_t size)
 {
+	// обрабатывать случаи, когда мы уменьшаем размер массива(не вызываются деструкторы для классов)
 	Allocate(size);
 }
 
@@ -130,6 +134,7 @@ void CMyArray<T>::Clear()
 {	
 	if (m_start != nullptr)
 	{
+		// destroy_n
 		for (size_t i = 0; i < m_size; i++)
 		{
 			m_start[i].~T();
@@ -156,6 +161,7 @@ T& CMyArray<T>::operator[](size_t index)
 template<typename T>
 const T& CMyArray<T>::operator[](size_t index) const
 {
+	// использовать неконстантный оператор индекирования
 	if (index >= m_capacity)
 	{
 		throw std::out_of_range("Index is out of range");
@@ -201,6 +207,7 @@ CMyArray<T>& CMyArray<T>::operator=(CMyArray&& other)
 template<typename T>
 T* CMyArray<T>::begin()
 {
+	// возвращать nullptr
 	if (m_start == nullptr)
 	{
 		throw std::out_of_range("Array is empty");

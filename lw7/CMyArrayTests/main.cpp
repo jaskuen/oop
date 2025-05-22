@@ -9,6 +9,7 @@ class CMyArrayTest : public ::testing::Test
 using TestTypes = ::testing::Types<std::string, float>;
 TYPED_TEST_SUITE(CMyArrayTest, TestTypes);
 
+// создавать переменные типа TypeParam и оперировать ими
 TYPED_TEST(CMyArrayTest, PushAndSize) {
     CMyArray<TypeParam> arr;
     EXPECT_EQ(arr.Size(), 0);
@@ -69,6 +70,7 @@ TYPED_TEST(CMyArrayTest, MoveConstructor) {
     EXPECT_EQ(arr1.Size(), 0);
 }
 
+// добавить тесты на копирование/перемещние самого себя
 TYPED_TEST(CMyArrayTest, CopyAssignment) {
     CMyArray<TypeParam> arr1;
     arr1.Push(TypeParam());
@@ -100,6 +102,7 @@ TYPED_TEST(CMyArrayTest, Iterators) {
 
     auto rit = arr.rbegin();
     EXPECT_NE(rit, arr.rend());
+
 }
 
 int main(int argc, char** argv) {
